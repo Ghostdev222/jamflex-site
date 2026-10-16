@@ -1,0 +1,6 @@
+name = "jamflex-worker"
+compatibility_date = "2026-10-16"
+account_id = "ACCOUNT_ID_PLACEHOLDER"
+
+[build]
+  upload_format = "service-worker"
