@@ -1,0 +1,7 @@
+Type one of these into the phone's browser — the whole line, scheme and port included:
+
+https://192.168.100.126:4321
+
+First visit: the phone warns the connection is not private because this certificate was
+made by your own computer, not bought from a certificate authority. On iPhone that is
+"Show All Details" then "visit this website"; on Android "Advanced" then "Proceed".
