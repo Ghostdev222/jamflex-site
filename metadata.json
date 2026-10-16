@@ -1,0 +1,8 @@
+{
+  "name": "JAMFLEX",
+  "description": "JAMFLEX media streaming and title discovery application.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
