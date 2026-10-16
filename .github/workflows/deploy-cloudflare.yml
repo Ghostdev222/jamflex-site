@@ -1,0 +1,50 @@
+name: Deploy JAMFLEX to Cloudflare
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      NODE_VERSION: '18'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install wrangler
+        run: npm install -g wrangler
+
+      - name: Build static site
+        run: node build.mjs
+
+      - name: Publish Worker with Wrangler
+        env:
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
+        run: |
+          set -e
+          cd deploy/cloudflare/worker
+          if grep -q "ACCOUNT_ID_PLACEHOLDER" wrangler.toml; then
+            sed -i "s/ACCOUNT_ID_PLACEHOLDER/${CLOUDFLARE_ACCOUNT_ID}/g" wrangler.toml
+          fi
+
+          wrangler publish --name jamflex-worker
+          printf "%s" "${TMDB_API_KEY}" | wrangler secret put TMDB_API_KEY
+
+      - name: Report Pages URL
+        run: |
+          echo "Cloudflare Pages will build the static site from GitHub on push using the build command 'node build.mjs' and output directory 'dist'."
+          echo "If you want, trigger a redeploy in the Cloudflare Pages dashboard or push a new commit."
