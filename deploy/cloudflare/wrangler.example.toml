@@ -1,0 +1,16 @@
+# Example wrangler config (edit before use)
+
+name = "jamflex-worker"
+compatibility_date = "2026-10-16"
+# account_id = "your-account-id"  # set this or run `wrangler whoami` to populate
+# workers_dev = true
+
+[build]
+  command = "npm run build"  # if you have a build step for the worker
+  upload_format = "service-worker"
+
+[env.production]
+  # route = "your-pages-site.pages.dev/api/*"
+  # zone_id = "..."
+
+# NOTE: fill in account_id and any routes before publishing.
